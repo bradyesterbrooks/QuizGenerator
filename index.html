@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Quiz</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <button type="button" class="btn">View High Scores</button>
+    <div id='topCenter'>
+        <p>Your remaining time: <span id='countdownTimer'>60</span> Seconds</p>
+    </div>
+
+    <div>
+
+        <h1><strong> Quiz Challenge</strong></h1>
+
+    </div>
+    <container>
+        <div id="beginning">
+
+            <h5>Press Start to Begin the Quiz.</h5>
+            <br>
+            <br>
+            <button id="startButton" type="button" class="btn btn-success">Start</button>
+
+        </div>
+        <br>
+        <div id='choices'></div>
+        <br>
+        <div id='questions'>
+        </div>
+
+
+    </container>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // let's define the question set and the answer set now...
+            
+            
+
+            var q1 = ['What does HTML Stand for?',
+                'Hypertext Magic Language',
+                'Hyperloop Markup Letters',
+                'Hypertext Markup Language']
+
+            var q1answer = 'Hypertext Markup Language';
+
+
+
+            $('#startButton').on("click", function () {
+
+                //let's deal with time
+
+                var myVar=setInterval(myTimer, 1000);
+                
+                function myTimer(){
+                    let time = parseInt($("#countdownTimer").text());
+                    console.log(time);
+                    $("#countdownTimer").text(time-=1);
+                    if (time==50) {
+                        alert("time is up!");
+                        myStopper();
+                        
+                    }};
+                function myStopper(){
+                    clearInterval(myVar);
+                };
+
+
+                
+                $('#beginning').empty();
+                var Questions = $("#questions");
+                var Choices = $("#choices");
+                var C1 = $("<ul>");
+                var C1a = $("<li>");
+                C1a.text(q1[0]);
+                C1.append(C1a);
+                Choices.append(C1);
+                var newQuestion = $("<ul>");
+                for (let i = 1; i < q1.length; i++) {
+                    var element = $("<li>");
+                    element.text(q1[i]);
+                    newQuestion.append(element);
+
+                }
+                Questions.append(newQuestion);
+
+
+
+
+            });
+
+
+
+
+
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

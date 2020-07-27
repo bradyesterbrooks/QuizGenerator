@@ -1,0 +1,35 @@
+h1, h5 {
+text-align:center
+}
+
+.timer {
+    position: absolute;
+    float: right;
+}
+
+#beginning {
+    
+    text-align: center;
+    margin: auto;
+  
+}
+
+#questions, #choices {
+    
+        text-align: center;
+        margin: auto;
+      
+}
+
+#topCenter {
+    text-align: center;
+    margin: auto;
+}
+
+li{
+    list-style-type: none;
+}
+
+#choices {
+color: darkblue;
+}
