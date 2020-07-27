@@ -12,7 +12,7 @@
 <body>
     <button type="button" class="btn">View High Scores</button>
     <div id='topCenter'>
-        <p>Your remaining time: <span id='countdownTimer'>60</span> Seconds</p>
+        <p>Your remaining time: <span id='countdownTimer'>45</span> Seconds</p>
     </div>
 
     <div>
@@ -30,9 +30,9 @@
 
         </div>
         <br>
-        <div id='choices'></div>
+        <div id='questions'></div>
         <br>
-        <div id='questions'>
+        <div id='choices'>
         </div>
 
 
@@ -40,58 +40,91 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            // let's define the question set and the answer set now...
-            
-            
-
-            var q1 = ['What does HTML Stand for?',
+            // let's define the question set and choices            
+            var q1 = ['What does HTML Stand for?']
+            var q2 = ['For which does CSS apply?']
+            var q3 = ['What is the DOM?']
+            var q4 = ['What is 5* parseInt(3+1+1)?']
+            var q5 = ['What is an API?']
+            var c1 = [
                 'Hypertext Magic Language',
                 'Hyperloop Markup Letters',
                 'Hypertext Markup Language']
+            var c2 = [
+                'styling',
+                'object oriented programming',
+                'designing the layout of the page']
+            var c3 = [
+                'Document Object Model',
+                'Dedicated Object Mover',
+                'Direct Overlaid Masking']
+            var c4 = [
+                '20',
+                '15',
+                '25']
+            var c5 = [
+                'Application Programming Instructions',
+                'Applied Programming Interface',
+                'Application Programming Interface']
 
-            var q1answer = 'Hypertext Markup Language';
-
-
+            var choicesArray = [c1, c2, c3, c4, c5]
+            var questionsArray = [q1, q2, q3, q4, q5]
 
             $('#startButton').on("click", function () {
-
                 //let's deal with time
-
-                var myVar=setInterval(myTimer, 1000);
-                
-                function myTimer(){
+                var myVar = setInterval(myTimer, 1000);
+                function myTimer() {
                     let time = parseInt($("#countdownTimer").text());
                     console.log(time);
-                    $("#countdownTimer").text(time-=1);
-                    if (time==50) {
+                    $("#countdownTimer").text(time -= 1);
+                    if (time == 0) {
                         alert("time is up!");
                         myStopper();
-                        
-                    }};
-                function myStopper(){
+                    }
+                };
+                function myStopper() {
                     clearInterval(myVar);
                 };
 
-
-                
                 $('#beginning').empty();
-                var Questions = $("#questions");
                 var Choices = $("#choices");
-                var C1 = $("<ul>");
-                var C1a = $("<li>");
-                C1a.text(q1[0]);
-                C1.append(C1a);
-                Choices.append(C1);
-                var newQuestion = $("<ul>");
-                for (let i = 1; i < q1.length; i++) {
-                    var element = $("<li>");
-                    element.text(q1[i]);
-                    newQuestion.append(element);
+                var Questions = $("#questions");
 
-                }
-                Questions.append(newQuestion);
+                for (let i = 0; i < questionsArray.length; i++) {
 
 
+
+                    //first we populate the question
+                    var question = $("<ul>");
+                    var questionValue = $("<li>");
+                    questionValue.text(questionsArray[i]);
+                    question.append(questionValue);
+                    Questions.append(question);
+
+                    //now let's populate the choices
+                    var choice = $("<ul>");
+
+                    for (let index = 0; index < choicesArray[1].length; index++) {
+                        var choiceValue = $("<li>");
+                        var button = $("<button type=button class=btn btn-light>" + "Choose" + "</button>");
+
+
+                        choiceValue.text(choicesArray[i][index]);
+                        choiceValue.append("\t\t\t", button);
+                        choice.append(choiceValue);
+                        choice.append($("<br>"));
+                        button.on("click", function () {
+
+                            console.log('choice ' + index + ' clicked');
+                            index+=1;
+                        })
+
+
+                    }
+                    Choices.append(choice);
+                    i+=1;
+
+                };
 
 
             });
