@@ -10,9 +10,11 @@
 </head>
 
 <body>
-    <button type="button" class="btn">View High Scores</button>
+    <button type="button" class="btn" id='highscores'>View High Scores</button>
+    <div id='leaderboard'>
+    </div>
     <div id='topCenter'>
-        <p>Your remaining time: <span id='countdownTimer'>45</span> Seconds</p>
+        <p>Your remaining time: <span id='countdownTimer'>600</span> Seconds</p>
     </div>
 
     <div>
@@ -41,37 +43,130 @@
     <script type="text/javascript">
         $(document).ready(function () {
             // let's define the question set and choices            
-            var q1 = ['What does HTML Stand for?']
-            var q2 = ['For which does CSS apply?']
-            var q3 = ['What is the DOM?']
-            var q4 = ['What is 5* parseInt(3+1+1)?']
-            var q5 = ['What is an API?']
-            var c1 = [
-                'Hypertext Magic Language',
-                'Hyperloop Markup Letters',
-                'Hypertext Markup Language']
-            var c2 = [
-                'styling',
-                'object oriented programming',
-                'designing the layout of the page']
-            var c3 = [
-                'Document Object Model',
-                'Dedicated Object Mover',
-                'Direct Overlaid Masking']
-            var c4 = [
-                '20',
-                '15',
-                '25']
-            var c5 = [
-                'Application Programming Instructions',
-                'Applied Programming Interface',
-                'Application Programming Interface']
+            var questionsArray = [
+                {
+                    Question: 'What does HTML Stand for?',
+                    1: 'Hypertext Magic Language',
+                    2: 'Hyperloop Markup Letters',
+                    3: 'Hypertext Markup Language',
+                    ANS: 'C'
+                },
+                {
+                    Question: 'For which does CSS apply?',
+                    1: 'styling',
+                    2: 'object oriented programming',
+                    3: 'designing the layout of the page',
+                    ANS: 'A'
+                },
+                {
+                    Question: 'What is the DOM?',
+                    1: 'Document Object Model',
+                    2: 'Dedicated Object Mover',
+                    3: 'Direct Overlaid Masking',
+                    ANS: 'A'
+                },
+                {
+                    Question: 'What is 5* parseInt(3+1+1)?',
+                    1: '20',
+                    2: '15',
+                    3: '25',
+                    ANS: 'C'
+                },
+                {
+                    Question: 'What is an API?',
+                    1: 'Application Programming Instructions',
+                    2: 'Applied Programming Interface',
+                    3: 'Application Programming Interface',
+                    ANS: 'C'
+                }];
 
-            var choicesArray = [c1, c2, c3, c4, c5]
-            var questionsArray = [q1, q2, q3, q4, q5]
+
+            var leaderboard = $("#leaderboard");
+            var close_button = $('<button type="button" class="btn btn-sm btn-danger">Close</button>');
+            var clear_button = $('<button type="button" class="btn btn-sm btn-info">Clear</button>');
+            var choice_button = $("<button type=button class=btn btn-success>" + "Choose" + "</button>");
+            var Choices = $("#choices");
+            var Questions = $("#questions");
+            var i = 1;
+
+            $('#highscores').on('click', function () {
+                //display the leaderboard when clicked
+                leaderboard.append('<br>', '<h6>Current Leaderboard</h6>');
+
+                var element = $("<ul>");
+                var leader1 = $("<li>");
+                var leader2 = $("<li>");
+                leader1.text('Brady');
+                leader2.text('Filler Name');
+                element.append(leader1, leader2);
+                leaderboard.append(element);
+                leaderboard.append(close_button, clear_button);
+
+            });
+            //if close is clicked, let's hide. if clear is clicked, lets empty the leaderboard.
+            close_button.on('click', function () {
+                leaderboard.hide();
+            });
+            clear_button.on('click', function () {
+
+                leaderboard.empty();
+            });
+            function displayQ(i) {
+                Questions.empty();
+                var element = $("<ul>");
+                var question = $("<li>");
+                question.text(questionsArray[i].Question);
+                Questions.append(question);
+            }
+            function displayChoices(i) {
+
+                Choices.empty();
+                var element = $("<ul>");
+                for (let index = 1; index < 4; index++) {
+                    var choices = $("<li>");
+                    choices.text(questionsArray[i][index]);
+                    choices.append($("<button type=button class=btn btn-success id=button" + index + ">" + "Choose" + "</button>"));
+                    // $("<button type=button class=btn btn-success>" + "Choose" + "</button>").attr('id', index);
+                    element.append(choices);
+
+                    Choices.append('<br>', element);
+                    $("#button1").on("click", function () {
+                        console.log('xxx');
+                        displayQ(i);
+                        displayChoices(i);
+                        i += 1
+
+                    });
+                    $("#button2").on("click", function () {
+                        console.log('xxx');
+                        displayQ(i);
+                        displayChoices(i);
+                        i += 1
+
+                    }); 
+                    $("#button3").on("click", function () {
+                        //so the console log works but display question and choices dont change...
+                        console.log('xxx');
+                        displayQ(i);
+                        displayChoices(i);
+                        i += 1
+
+                    });
+
+                }
+            }
+
+            // $("#button1").on("click", function () {
+            //     console.log('xxx');
+            //     displayQ(i);
+            //     displayChoices(i);
+            //     i += 1
+
+            // });
 
             $('#startButton').on("click", function () {
                 //let's deal with time
+
                 var myVar = setInterval(myTimer, 1000);
                 function myTimer() {
                     let time = parseInt($("#countdownTimer").text());
@@ -87,44 +182,9 @@
                 };
 
                 $('#beginning').empty();
-                var Choices = $("#choices");
-                var Questions = $("#questions");
+                displayQ(0);
+                displayChoices(0);
 
-                for (let i = 0; i < questionsArray.length; i++) {
-
-
-
-                    //first we populate the question
-                    var question = $("<ul>");
-                    var questionValue = $("<li>");
-                    questionValue.text(questionsArray[i]);
-                    question.append(questionValue);
-                    Questions.append(question);
-
-                    //now let's populate the choices
-                    var choice = $("<ul>");
-
-                    for (let index = 0; index < choicesArray[1].length; index++) {
-                        var choiceValue = $("<li>");
-                        var button = $("<button type=button class=btn btn-light>" + "Choose" + "</button>");
-
-
-                        choiceValue.text(choicesArray[i][index]);
-                        choiceValue.append("\t\t\t", button);
-                        choice.append(choiceValue);
-                        choice.append($("<br>"));
-                        button.on("click", function () {
-
-                            console.log('choice ' + index + ' clicked');
-                            index+=1;
-                        })
-
-
-                    }
-                    Choices.append(choice);
-                    i+=1;
-
-                };
 
 
             });
@@ -135,6 +195,10 @@
 
 
         });
+
+        //curent issues: cant toggle between showing, hiding leaderboard. 
+        //               cant get further than second question and option set...
+        //               cant display a button for every option 
 
     </script>
 
