@@ -46,51 +46,63 @@
             var questionsArray = [
                 {
                     Question: 'What does HTML Stand for?',
-                    1: 'Hypertext Magic Language',
-                    2: 'Hyperloop Markup Letters',
-                    3: 'Hypertext Markup Language',
-                    ANS: 'C'
+                    choices: ['Hypertext Magic Language','Hyperloop Markup Letters','Hypertext Markup Language'],
+                    answer: 2
+
+                    // 1: 'Hypertext Magic Language',
+                    // 2: 'Hyperloop Markup Letters',
+                    // 3: 'Hypertext Markup Language',
+                    //ANS: 'C'
                 },
                 {
                     Question: 'For which does CSS apply?',
                     1: 'styling',
                     2: 'object oriented programming',
                     3: 'designing the layout of the page',
-                    ANS: 'A'
+                    //ANS: 'A'
                 },
                 {
                     Question: 'What is the DOM?',
                     1: 'Document Object Model',
                     2: 'Dedicated Object Mover',
                     3: 'Direct Overlaid Masking',
-                    ANS: 'A'
+                    //ANS: 'A'
                 },
                 {
                     Question: 'What is 5* parseInt(3+1+1)?',
                     1: '20',
                     2: '15',
                     3: '25',
-                    ANS: 'C'
+                    //ANS: 'C'
                 },
                 {
                     Question: 'What is an API?',
                     1: 'Application Programming Instructions',
                     2: 'Applied Programming Interface',
                     3: 'Application Programming Interface',
-                    ANS: 'C'
+                    //ANS: 'C'
+                },
+                {
+                    Question: 'WHich of the following is an example of an element?',
+                    1: '<z>',
+                    2: '<div.x>',
+                    3: '<p>',
+                    //ANS: 'C'
                 }];
 
 
             var leaderboard = $("#leaderboard");
-            var close_button = $('<button type="button" class="btn btn-sm btn-danger">Close</button>');
-            var clear_button = $('<button type="button" class="btn btn-sm btn-info">Clear</button>');
-            var choice_button = $("<button type=button class=btn btn-success>" + "Choose" + "</button>");
+            var close_button = $('<button type="button" id="close-button" class="btn btn-sm btn-danger">Close</button>');
+            var clear_button = $('<button type="button" id="clear-button" class="btn btn-sm btn-info">Clear</button>');
+            // var choice_button = $("<button type=button class=btn btn-success>" + "Choose" + "</button>");
             var Choices = $("#choices");
             var Questions = $("#questions");
-            var i = 1;
+            var question_number = 0;
 
-            $('#highscores').on('click', function () {
+            $(document).on('click', "#highscores", function () {
                 //display the leaderboard when clicked
+                console.log('xxx');
+                leaderboard.empty();
                 leaderboard.append('<br>', '<h6>Current Leaderboard</h6>');
 
                 var element = $("<ul>");
@@ -101,69 +113,78 @@
                 element.append(leader1, leader2);
                 leaderboard.append(element);
                 leaderboard.append(close_button, clear_button);
+                leaderboard.show();
+
+                // close_button.on('click', function () {
+                //     leaderboard.hide();
+                // });
+                // clear_button.on('click', function () {
+                //     leaderboard.empty();
+                // });
 
             });
             //if close is clicked, let's hide. if clear is clicked, lets empty the leaderboard.
-            close_button.on('click', function () {
+            $(document).on('click','#close-button', function () {
                 leaderboard.hide();
             });
-            clear_button.on('click', function () {
-
+            $(document).on('click','#clear-button', function () {
                 leaderboard.empty();
             });
-            function displayQ(i) {
-                console.log(i);
+
+            function displayQ(num) {
+                console.log('displayq');
                 Questions.empty();
                 var element = $("<ul>");
                 var question = $("<li>");
-                question.text(questionsArray[i].Question);
+                question.text(questionsArray[num].Question);
                 Questions.append(question);
             }
-            function displayChoices(i) {
+            function displayChoices(question_number) {
+            
 
                 Choices.empty();
-                var element = $("<ul>");
-                for (let index = 1; index < 4; index++) {
+
+                for (let index = 0; index < 3; index++) {
+                    var element = $("<ul>");
                     var choices = $("<li>");
-                    choices.text(questionsArray[i][index]);
-                    choices.append($("<button type=button class=btn btn-success id=button" + index + ">" + "Choose" + "</button>"));
+                    choices.text(questionsArray[question_number].choices[index]);
+                    var button = $("<button type=button class=btn btn-success>" + "Choose" + "</button>");
+                    button.attr('id', index);
+                    choices.append(button);
                     // $("<button type=button class=btn btn-success>" + "Choose" + "</button>").attr('id', index);
                     element.append(choices);
 
                     Choices.append('<br>', element);
                     $("#button1").on("click", function () {
                         console.log('xxx');
-                        displayQ(i);
-                        displayChoices(i);
-                        i += 1
+                        question_number += 1
+                        displayQ(question_number);
+                        displayChoices(question_number);
+                        
 
                     });
                     $("#button2").on("click", function () {
                         console.log('xxx');
-                        displayQ(i);
-                        displayChoices(i);
-                        i += 1
+                        question_number += 1
+                        displayQ(question_number);
+                        displayChoices(question_number);
+                        
 
-                    }); 
+                    });
                     $("#button3").on("click", function () {
                         //so the console log works but display question and choices dont change...
                         console.log('xxx');
-                        displayQ(i);
-                        displayChoices(i);
-                        i += 1
+                        question_number += 1
+                        displayQ(question_number);
+                        displayChoices(question_number);
+                        
 
                     });
 
                 }
             }
 
-            // $("#button1").on("click", function () {
-            //     console.log('xxx');
-            //     displayQ(i);
-            //     displayChoices(i);
-            //     i += 1
 
-            // });
 
             $('#startButton').on("click", function () {
                 //let's deal with time
@@ -171,7 +192,7 @@
                 var myVar = setInterval(myTimer, 1000);
                 function myTimer() {
                     let time = parseInt($("#countdownTimer").text());
-                    console.log(time);
+                    
                     $("#countdownTimer").text(time -= 1);
                     if (time == 0) {
                         alert("time is up!");
@@ -183,8 +204,8 @@
                 };
 
                 $('#beginning').empty();
-                displayQ(0);
-                displayChoices(0);
+                displayQ(question_number);
+                displayChoices(question_number);
 
 
 
